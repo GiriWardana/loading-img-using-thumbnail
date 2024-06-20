@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .image-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            z-index: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes opacityPulse {
+            0%, 100% {
+                opacity: 0.9;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        #thumbnail {
+            animation: opacityPulse 2s infinite;
+        }
+    </style>
+    <title>Image Load Example</title>
+</head>
+<body>
+    <div class="image-container">
+        <img id="thumbnail" src="https://dummyimage.com/300x200/000/dd00ff.jpg&text=Asdasda" alt="Thumbnail">
+        <img id="fullImage" class="hidden" src="https://www.metroparks.net/wp-content/uploads/2017/06/1080p_BDC_vernal-pool_filtered-sunlight_KH-768x511.jpg" alt="Full Image">
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var fullImage = document.getElementById('fullImage');
+
+            fullImage.onload = function () {
+                var thumbnail = document.getElementById('thumbnail');
+                thumbnail.src = fullImage.src; // Replace thumbnail with full image
+                thumbnail.style.animation = 'none'; // Stop the animation
+                thumbnail.style.opacity = 0;
+                setTimeout(function() {
+                    thumbnail.src = fullImage.src; // Update the src attribute to full image
+                    thumbnail.style.opacity = 1; // Fade in the full image
+                }, 100); // Delay to ensure the opacity change is noticeable
+            };
+
+            // Trigger the loading of the full image
+            fullImage.src = fullImage.src;
+        });
+    </script>
+</body>
+</html>
